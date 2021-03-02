@@ -6,7 +6,11 @@ const UserSchema = new Schema(
 		password: String,
 		email: String,
 		userName: String,
-		posts: [{ type: Schema.Types.ObjectId, ref: "post" }],
+		profilePicUrl: String,
+		posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+		comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
+		likedPosts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+		likedComments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
 		follows: [{ type: Schema.Types.ObjectId, ref: "user", unique: true }],
 		refreshTokens: [
 			{
