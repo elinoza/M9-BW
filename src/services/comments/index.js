@@ -99,7 +99,7 @@ PostRouter.put("/:id", authorize, async (req, res, next) => {
  * this is for the image upload
  */
 PostRouter.post(
-	"/imageUpload/:id",
+	"/:id",
 	authorize,
 	cloudMulter.single("image"),
 	async (req, res, next) => {

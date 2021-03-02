@@ -23,6 +23,15 @@ usersRouter.get("/me", authorize, async (req, res, next) => {
 	}
 })
 
+usersRouter.get("/:id", authorize, async (req, res, next) => {
+	try {
+		const profile = await UserModel.findById(req.params.id)
+		res.send(profile)
+	} catch (error) {
+		next(error)
+	}
+})
+
 usersRouter.get("/profile", authorize, async (req, res, next) => {
 	try {
 		console.log("help me")
