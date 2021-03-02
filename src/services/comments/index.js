@@ -72,7 +72,7 @@ PostRouter.put("/:id", authorize, async (req, res, next) => {
 			_id: 0,
 			userName: 1,
 		})
-		if (author.userName !== req.user.name) {
+		if (author.userName !== req.user.userName) {
 			const error = new Error(
 				`User does not own the Post with id ${req.params.id}`
 			)
@@ -109,7 +109,7 @@ PostRouter.post(
 				_id: 0,
 				userName: 1,
 			})
-			if (author.userName !== req.user.name) {
+			if (author.userName !== req.user.userName) {
 				const error = new Error(
 					`User does not own the Post with id ${req.params.id}`
 				)

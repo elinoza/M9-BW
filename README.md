@@ -1,4 +1,5 @@
 # M9-BW
+
 Last Build Week
 
 <img src="https://www.freepnglogos.com/uploads/instagram-logo-png-transparent-0.png" width="400">
@@ -17,15 +18,14 @@ Here are the features to implement:
 
 ## Posts
 
-- user should be able to add/delete posts to the feed (user can edit & delete only their own data).
+- user should be able to add/delete posts to the feed (user can edit & delete only their own data). done BE
 - it should be possible to comment on post. (user can delete and edit only his own comments).
-- it should be possible to like/unlike post.
-- it should be possible to see the list of users who liked the post.
-
+- it should be possible to like/unlike post. [done in BE]
+- it should be possible to see the list of users who liked the post.[done in BE]
 
 ## [EXTRA] Connections
 
-- user should be able to follow/unfollow other users
+- user should be able to follow/unfollow other users [done in BE but needs some fixing/polish]
 - user should be able to see posts of the users he is following
 
 ## [EXTRA] Chat
@@ -43,6 +43,6 @@ Here are the features to implement:
 
 Tips :
 
- - Use cloudinary to serve images
+- Use cloudinary to serve images
 
 Deploy the project, show everyone how skilled you are!
