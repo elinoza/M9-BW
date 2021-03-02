@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose")
 const mongoose = require("mongoose")
 const mongoosePaginate = require("mongoose-paginate-v2")
 
-const PostSchema = new Schema(
+const CommentSchema = new Schema(
 	{
 		text: {
 			type: String,
@@ -12,17 +12,18 @@ const PostSchema = new Schema(
 			ref: "user",
 			required: true,
 		},
+		likes: [{ type: Schema.Types.ObjectId, ref: "user" }],
+		comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
 		imageUrl: String,
-		comments: [],
 	},
 	{ timestamps: true }
 )
 //{ type: "ObjectId", index: true }
-const PostModel = model("Post", PostSchema)
+const CommentModel = model("Comment", CommentSchema)
 
-PostSchema.plugin(mongoosePaginate)
-PostSchema.static("findPostWithAuthor", async (id) => {
-	const post = await PostModel.findById(id).populate(author)
-	return post
+CommentSchema.plugin(mongoosePaginate)
+CommentSchema.static("findCommentWithAuthor", async (id) => {
+	const comment = await CommentModel.findById(id).populate("user")
+	return comment
 })
-module.exports = mongoose.model("Post", PostSchema)
+module.exports = mongoose.model("Comment", CommentSchema)

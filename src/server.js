@@ -5,6 +5,7 @@ const listEndpoints = require("express-list-endpoints")
 const mongoose = require("mongoose")
 const usersRouter = require("./services/users")
 const postsRouter = require("./services/posts")
+const commentsRouter = require("./services/comments")
 
 const {
 	notFoundHandler,
@@ -23,6 +24,7 @@ server.use(express.json())
 
 server.use("/users", usersRouter)
 server.use("/posts", postsRouter)
+server.use("/comments", commentsRouter)
 
 // ERROR HANDLERS MIDDLEWARES
 
