@@ -77,6 +77,20 @@ usersRouter.get(
 		}
 	}
 )
+usersRouter.post("/login", async (req, res, next) => {
+	try {
+		const { email, password } = req.body
+		const user = await UserModel.findByCredentials(email, password, {
+			new: true,
+		})
+		console.log(user)
+		const tokens = await authenticate(user)
+		console.log(tokens)
+		res.send(tokens)
+	} catch (error) {
+		next(error)
+	}
+})
 usersRouter.get("/:id", authorize, async (req, res, next) => {
 	try {
 		const profile = await UserModel.findById(req.params.id)
@@ -157,21 +171,6 @@ usersRouter.post("/unfollow/:id", authorize, async (req, res, next) => {
 usersRouter.delete("/me", authorize, async (req, res, next) => {
 	try {
 		await req.user.deleteOne(res.send("Deleted"))
-	} catch (error) {
-		next(error)
-	}
-})
-
-usersRouter.post("/login", async (req, res, next) => {
-	try {
-		const { email, password } = req.body
-		const user = await UserModel.findByCredentials(email, password, {
-			new: true,
-		})
-		console.log(user)
-		const tokens = await authenticate(user)
-		console.log(tokens)
-		res.send(tokens)
 	} catch (error) {
 		next(error)
 	}

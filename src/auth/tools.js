@@ -3,6 +3,7 @@ const User = require("../services/users/schema");
 const mongoose = require("mongoose")
 const authenticate = async (user) => {
   try {
+    console.log("authenticate =>",user)
     const newAccessToken = await generateJWT({ _id: user._id }); // why do we pass user id?
     const newRefreshToken = await generateRefreshJWT({ _id: user._id });
     const user2 = await User.findByIdAndUpdate(mongoose.Types.ObjectId(user._id),{$addToSet:{refreshTokens:{ token: newAccessToken, refreshToken:newRefreshToken }}},{new:true});

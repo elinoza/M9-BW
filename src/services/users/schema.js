@@ -14,8 +14,7 @@ const UserSchema = new Schema(
 			unique: true,
 		},
 		userName: String,
-		name: String,
-		surname: String,
+		nameNsurname: String,
 		profilePicUrl: String,
 		posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 		comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
@@ -37,8 +36,8 @@ const UserSchema = new Schema(
 )
 
 UserSchema.statics.findByCredentials = async function (email, plainPW) {
-	const user = await this.findOne({ email })
-	console.log(user)
+	const user = await this.findOne( {email} )
+	console.log(plainPW)
 	if (user) {
 		const isMatch = await bcrypt.compare(plainPW, user.password)
 		if (isMatch) return user
