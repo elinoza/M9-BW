@@ -45,7 +45,6 @@ server.use("/users", usersRouter)
 server.use("/posts", postsRouter)
 server.use("/comments", commentsRouter)
 
-
 // ERROR HANDLERS MIDDLEWARES
 
 server.use(badRequestHandler)
