@@ -3,10 +3,18 @@ const bcrypt = require("bcryptjs")
 
 const UserSchema = new Schema(
 	{
-		googleId:String,
-		password: String,
-		email: String,
+		googleId: String,
+		password: {
+			type: String,
+			required: true,
+		},
+		email: {
+			type: String,
+			required: true,
+			unique: true,
+		},
 		userName: String,
+		nameNsurname: String,
 		profilePicUrl: String,
 		posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 		comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
@@ -27,19 +35,9 @@ const UserSchema = new Schema(
 	{ timestamps: true }
 )
 
-UserSchema.methods.toJSON = function () {
-	const user = this
-	const userObject = user.toObject()
-
-	delete userObject.password
-	delete userObject.__v
-
-	return userObject
-}
-
 UserSchema.statics.findByCredentials = async function (email, plainPW) {
-	const user = await this.findOne({ email })
-	console.log(user)
+	const user = await this.findOne( {email} )
+	console.log(plainPW)
 	if (user) {
 		const isMatch = await bcrypt.compare(plainPW, user.password)
 		if (isMatch) return user
@@ -64,5 +62,15 @@ UserSchema.static("findPopulated", async (id) => {
 	//.populate("follows")
 	return User
 })
+
+UserSchema.methods.toJSON = function () {
+	const user = this
+	const userObject = user.toObject()
+
+	delete userObject.password
+	delete userObject.__v
+
+	return userObject
+}
 
 module.exports = model("user", UserSchema)

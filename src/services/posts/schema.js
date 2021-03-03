@@ -23,7 +23,7 @@ const PostModel = model("Post", PostSchema)
 
 PostSchema.plugin(mongoosePaginate)
 PostSchema.static("findPostWithAuthor", async (id) => {
-	const post = await PostModel.findById(id).populate(author)
+	const post = await PostModel.findById(id).populate(user, "name surname")
 	return post
 })
 module.exports = mongoose.model("Post", PostSchema)

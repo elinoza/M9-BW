@@ -93,7 +93,7 @@ CommentRouter.get("/", authorize, async (req, res, next) => {
 	try {
 		//const query = q2m(req.query)
 		const comments = await CommentSchema.find({})
-			.populate("user")
+			.populate("user", "-password -refreshToken")
 			.populate("comments")
 		res.send(comments)
 	} catch (error) {

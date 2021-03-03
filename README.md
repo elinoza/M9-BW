@@ -13,7 +13,7 @@ Here are the features to implement:
 ## Users
 
 - user should register and login with email password or oauth.
-- user should be able to edit their profile details, such as avatar, username (only their own data) [must add avatar upload]
+- user should be able to edit their profile details, such as avatar, username (only their own data) [avatar done, open to suggestion about other fields]
 - user profile should contain previous posts.[done in BE]
 
 ## Posts
