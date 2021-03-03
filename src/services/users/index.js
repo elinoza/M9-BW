@@ -90,11 +90,15 @@ usersRouter.get("/:id", authorize, async (req, res, next) => {
 
 usersRouter.post("/register", async (req, res, next) => {
 	try {
-		const newUser = new UserModel(req.body)
-		console.log("null? ->", newUser._id)
-		const { _id } = await newUser.save()
-		console.log(_id)
-		res.status(201).send(_id)
+		if (UserModel.find(req.body.email)) {
+			console.log("duplicate")
+		} else {
+			const newUser = new UserModel(req.body)
+			console.log("null? ->", newUser._id)
+			const { _id } = await newUser.save()
+			console.log(_id)
+			res.status(201).send(_id)
+		}
 	} catch (error) {
 		next(error)
 	}
