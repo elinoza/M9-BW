@@ -69,7 +69,7 @@ PostRouter.get("/fromFollowed", authorize, async (req, res, next) => {
 			"user",
 			"-password -refreshToken"
 		)
-		posts.filter((post) => req.user.follows.includes(post._id))
+		posts = posts.filter((post) => req.user.follows.includes(post._id))
 		res.send(posts)
 	} catch (error) {
 		return next(error)
@@ -83,7 +83,7 @@ PostRouter.get("/fromNotFollowed", authorize, async (req, res, next) => {
 			"user",
 			"-password -refreshToken"
 		)
-		posts.filter((post) => !req.user.follows.includes(post._id))
+		posts = posts.filter((post) => !req.user.follows.includes(post._id))
 		res.send(posts)
 	} catch (error) {
 		return next(error)
