@@ -10,9 +10,10 @@ const authorize = async (req, res, next) => {
     console.log("working->");
     console.log("THIS IS THE DECODED ID =>", decoded);
     console.log("<-working");
-    const user = await UserModel.findOne({
-      _id: decoded._id,
-    });
+      const user = await UserModel.findOne({
+        _id: decoded._id,
+      });
+   
 
     if (!user) {
       throw new Error();
@@ -22,7 +23,7 @@ const authorize = async (req, res, next) => {
     req.user = user;
     next();
   } catch (e) {
-    console.log(e)
+    console.log(e);
     const err = new Error("Please authenticate");
     err.httpStatusCode = 401;
     next(err);
