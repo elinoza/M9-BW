@@ -39,7 +39,7 @@ usersRouter.get("/me", authorize, async (req, res, next) => {
 		console.log("help me")
 		//const profile = await UserModel.findPopulated(req.user._id)
 		const profile = await UserModel.find(req.user._id)
-			.populate("follows")
+			.populate("follows", "-password -refreshToken")
 			.populate("posts")
 		console.log("got this as profile", profile)
 		res.send(profile[0])
@@ -94,7 +94,7 @@ usersRouter.post("/login", async (req, res, next) => {
 usersRouter.get("/:id", authorize, async (req, res, next) => {
 	try {
 		const profile = await UserModel.findById(req.params.id)
-			.populate("follows")
+			.populate("follows", "-password -refreshToken")
 			.populate("posts")
 		res.send(profile)
 	} catch (error) {
