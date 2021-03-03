@@ -8,7 +8,7 @@ const authenticate = async (user) => {
     const user2 = await User.findByIdAndUpdate(mongoose.Types.ObjectId(user._id),{$addToSet:{refreshTokens:{ token: newAccessToken, refreshToken:newRefreshToken }}},{new:true});
    console.log("user2->",user2)
 
-    return user2;
+    return {accessToken:newAccessToken, refreshToken:newRefreshToken};
   } catch (error) {
     console.log(error);
     throw new Error(error);

@@ -23,9 +23,9 @@ const { authorize } = require("../../auth/middleware")
 PostRouter.post("/", authorize, async (req, res, next) => {
 	try {
 		console.log("NEW POST")
-		const post = { ...req.body, image: "" }
+		const post = { ...req.body, image: "", user: req.user.id }
 		console.log(post)
-		post.userName = req.user.name
+		//post.userName = req.user.name
 		console.log(post.userName)
 		post.user = await userSchema.find({ username: post.userName }, { _id: 1 })
 		post.user = post.user[0]._id
@@ -33,6 +33,15 @@ PostRouter.post("/", authorize, async (req, res, next) => {
 		console.log(post)
 		const newPost = new PostSchema(post)
 		const { _id } = await newPost.save()
+		const updated = await userSchema.findByIdAndUpdate(
+			req.user,
+			{
+				$addToSet: {
+					posts: _id,
+				},
+			},
+			{ runValidators: true, new: true }
+		)
 		console.log(_id)
 		res.status(201).send(_id)
 	} catch (error) {
@@ -65,14 +74,32 @@ PostRouter.get("/:id", authorize, async (req, res, next) => {
 	}
 })
 
+PostRouter.get("/likes/:id", authorize, async (req, res, next) => {
+	try {
+		const post = await PostSchema.findById(req.params.id, {
+			_id: 0,
+			likes: 1,
+		}).populate("likes")
+		if (post) {
+			res.send(post)
+		} else {
+			const error = new Error(`Post with id ${req.params.id} not found`)
+			error.httpStatusCode = 404
+			next(error)
+		}
+	} catch (error) {
+		return next(error)
+	}
+})
+
 PostRouter.put("/:id", authorize, async (req, res, next) => {
 	try {
 		const post = { ...req.body }
 		const author = await PostSchema.findById(req.params.id, {
 			_id: 0,
-			userName: 1,
+			user: 1,
 		})
-		if (author.userName !== req.user.name) {
+		if (author.userName !== req.user.userName) {
 			const error = new Error(
 				`User does not own the Post with id ${req.params.id}`
 			)
@@ -95,11 +122,81 @@ PostRouter.put("/:id", authorize, async (req, res, next) => {
 	}
 })
 
+PostRouter.post("/like/:id", authorize, async (req, res, next) => {
+	try {
+		const post = await PostSchema.findByIdAndUpdate(
+			req.params.id,
+			{
+				$addToSet: {
+					likes: req.user._id,
+				},
+			},
+			{
+				runValidators: true,
+				new: true,
+			}
+		)
+		if (post) {
+			const updated = await userSchema.findByIdAndUpdate(
+				req.user,
+				{
+					$addToSet: {
+						likedPosts: req.params.id,
+					},
+				},
+				{ runValidators: true, new: true }
+			)
+			res.status(201).send("liked")
+		} else {
+			const error = new Error(`Post with id ${req.params.id} not found`)
+			error.httpStatusCode = 404
+			next(error)
+		}
+	} catch (error) {
+		next(error)
+	}
+})
+
+PostRouter.post("/dislike/:id", authorize, async (req, res, next) => {
+	try {
+		const post = await PostSchema.findByIdAndUpdate(
+			req.params.id,
+			{
+				$pull: {
+					likes: req.user._id,
+				},
+			},
+			{
+				runValidators: true,
+				new: true,
+			}
+		)
+		if (post) {
+			const updated = await userSchema.findByIdAndUpdate(
+				req.user,
+				{
+					$pull: {
+						likedPosts: req.params.id,
+					},
+				},
+				{ runValidators: true, new: true }
+			)
+			res.status(201).send("removed the like")
+		} else {
+			const error = new Error(`Post with id ${req.params.id} not found`)
+			error.httpStatusCode = 404
+			next(error)
+		}
+	} catch (error) {
+		next(error)
+	}
+})
+
 /**
  * this is for the image upload
  */
 PostRouter.post(
-	"/:id",
+	"/imageUpload/:id",
 	authorize,
 	cloudMulter.single("image"),
 	async (req, res, next) => {
@@ -107,9 +204,9 @@ PostRouter.post(
 			const post = { imageUrl: req.file.path }
 			const author = await PostSchema.findById(req.params.id, {
 				_id: 0,
-				userName: 1,
+				user: 1,
 			})
-			if (author.userName !== req.user.name) {
+			if (author.user.userName !== req.user.userName) {
 				const error = new Error(
 					`User does not own the Post with id ${req.params.id}`
 				)
@@ -143,9 +240,9 @@ PostRouter.delete("/:id", authorize, async (req, res, next) => {
 	try {
 		const author = await PostSchema.findById(req.params.id, {
 			_id: 0,
-			userName: 1,
+			user: 1,
 		})
-		if (author.userName !== req.user.name) {
+		if (author.user.userName !== req.user.iserName) {
 			const error = new Error(
 				`User does not own the Post with id ${req.params.id}`
 			)
@@ -154,7 +251,18 @@ PostRouter.delete("/:id", authorize, async (req, res, next) => {
 		}
 		const post = await PostSchema.findByIdAndDelete(req.params.id)
 		if (post) {
-			res.send("Deleted")
+			const updated = await userSchema.findByIdAndUpdate(
+				req.user,
+				{
+					$pull: {
+						posts: req.params.id,
+					},
+				},
+				{ runValidators: true, new: true }
+			)
+			if (updated) {
+				res.send("Deleted")
+			}
 		} else {
 			const error = new Error(`Post with id ${req.params.id} not found`)
 			error.httpStatusCode = 404
