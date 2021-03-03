@@ -10,15 +10,11 @@ const { authorize } = require("../../auth/middleware")
 CommentRouter.post("/:id", authorize, async (req, res, next) => {
 	try {
 		console.log("NEWcomment")
-		const comment = { ...req.body, image: "", user: req.user.id }
+		const comment = { ...req.body, user: req.user.id }
 		console.log(comment)
 		//post.userName = req.user.name
 		console.log(comment.userName)
-		comment.user = await userSchema.find(
-			{ username: comment.userName },
-			{ _id: 1 }
-		)
-		comment.user = comment.user[0]._id
+		comment.user = req.user._id
 		console.log(comment.user)
 		console.log(comment)
 		const newComment = new CommentSchema(comment)
@@ -55,11 +51,7 @@ CommentRouter.post("/reply/:id", authorize, async (req, res, next) => {
 		console.log(comment)
 		//comment.userName = req.user.name
 		console.log(comment.userName)
-		comment.user = await userSchema.find(
-			{ username: comment.userName },
-			{ _id: 1 }
-		)
-		comment.user = comment.user[0]._id
+		comment.user = req.user._id
 		console.log(comment.user)
 		console.log(comment)
 		const newComment = new CommentSchema(comment)
@@ -121,7 +113,7 @@ CommentRouter.get("/likes/:id", authorize, async (req, res, next) => {
 		const comment = await CommentSchema.findById(req.params.id, {
 			_id: 0,
 			likes: 1,
-		}).populate("likes")
+		}).populate("likes", "-password -refreshToken")
 		if (comment) {
 			res.send(comment)
 		} else {
