@@ -3,10 +3,12 @@ const bcrypt = require("bcryptjs")
 
 const UserSchema = new Schema(
 	{
-		googleId:String,
+		googleId: String,
 		password: String,
 		email: String,
 		userName: String,
+		name: String,
+		surname: String,
 		profilePicUrl: String,
 		posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 		comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
