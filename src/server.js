@@ -7,7 +7,8 @@ const passport = require("passport")
 const cookieParser = require("cookie-parser")
 
 const usersRouter = require("./services/users")
-const oauth = require("./auth/oauth")
+const postsRouter = require("./services/posts")
+const commentsRouter = require("./services/comments")
 
 const {
   notFoundHandler,
@@ -39,6 +40,8 @@ server.use(express.json())
 server.use(cookieParser())
 server.use(passport.initialize())
 server.use("/users", usersRouter)
+server.use("/posts", postsRouter)
+server.use("/comments", commentsRouter)
 
 // ERROR HANDLERS MIDDLEWARES
 
