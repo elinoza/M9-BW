@@ -42,11 +42,12 @@ usersRouter.get("/me", authorize, async (req, res, next) => {
 			.populate("follows")
 			.populate("posts")
 		console.log("got this as profile", profile)
-		res.send(profile)
+		res.send(profile[0])
 	} catch (error) {
 		next(error)
 	}
 })
+
 usersRouter.get(
 	"/googleLogin",
 	passport.authenticate("google", { scope: ["profile", "email"] })
@@ -79,6 +80,8 @@ usersRouter.get(
 usersRouter.get("/:id", authorize, async (req, res, next) => {
 	try {
 		const profile = await UserModel.findById(req.params.id)
+			.populate("follows")
+			.populate("posts")
 		res.send(profile)
 	} catch (error) {
 		next(error)
