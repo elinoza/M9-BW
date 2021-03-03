@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs")
 
 const UserSchema = new Schema(
 	{
+		googleId:String,
 		password: String,
 		email: String,
 		userName: String,
