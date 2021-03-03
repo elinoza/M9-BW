@@ -13,13 +13,13 @@ Here are the features to implement:
 ## Users
 
 - user should register and login with email password or oauth.
-- user should be able to edit their profile details, such as avatar, username (only their own data)
+- user should be able to edit their profile details, such as avatar, username (only their own data) [must add avatar upload]
 - user profile should contain previous posts.[done in BE]
 
 ## Posts
 
 - user should be able to add/delete posts to the feed (user can edit & delete only their own data). [done BE]
-- it should be possible to comment on post. (user can delete and edit only his own comments).
+- it should be possible to comment on post. (user can delete and edit only his own comments). [done BE]
 - it should be possible to like/unlike post. [done in BE]
 - it should be possible to see the list of users who liked the post.[done in BE]
 

@@ -33,7 +33,9 @@ server.use(forbiddenHandler)
 server.use(notFoundHandler)
 server.use(genericErrorHandler)
 
-console.log(listEndpoints(server))
+const endpoints = listEndpoints(server)
+
+//console.log(listEndpoints(server))
 
 mongoose
 	.connect(process.env.MONGO_CONNECTION_STRING, {
@@ -44,6 +46,9 @@ mongoose
 	.then(
 		server.listen(port, () => {
 			console.log("Running on port", port)
+			endpoints.forEach((endpoint) => {
+				console.log(endpoint.methods, " - ", endpoint.path)
+			})
 		})
 	)
 	.catch((err) => console.log(err))
