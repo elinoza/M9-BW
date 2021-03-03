@@ -26,7 +26,7 @@ usersRouter.get("/", authorize, async (req, res, next) => {
 	}
 })
 
-usersRouter.get("/me", authorize, async (req, res, next) => {
+usersRouter.get("/profile", authorize, async (req, res, next) => {
 	try {
 		res.send(req.user)
 	} catch (error) {
@@ -34,7 +34,7 @@ usersRouter.get("/me", authorize, async (req, res, next) => {
 	}
 })
 
-usersRouter.get("/profile", authorize, async (req, res, next) => {
+usersRouter.get("/me", authorize, async (req, res, next) => {
 	try {
 		console.log("help me")
 		//const profile = await UserModel.findPopulated(req.user._id)
