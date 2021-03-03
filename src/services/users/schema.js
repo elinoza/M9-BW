@@ -29,16 +29,6 @@ const UserSchema = new Schema(
 	{ timestamps: true }
 )
 
-UserSchema.methods.toJSON = function () {
-	const user = this
-	const userObject = user.toObject()
-
-	delete userObject.password
-	delete userObject.__v
-
-	return userObject
-}
-
 UserSchema.statics.findByCredentials = async function (email, plainPW) {
 	const user = await this.findOne({ email })
 	console.log(user)
@@ -66,5 +56,15 @@ UserSchema.static("findPopulated", async (id) => {
 	//.populate("follows")
 	return User
 })
+
+UserSchema.methods.toJSON = function () {
+	const user = this
+	const userObject = user.toObject()
+
+	delete userObject.password
+	delete userObject.__v
+
+	return userObject
+}
 
 module.exports = model("user", UserSchema)

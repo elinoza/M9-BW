@@ -27,8 +27,8 @@ PostRouter.post("/", authorize, async (req, res, next) => {
 		console.log(post)
 		//post.userName = req.user.name
 		console.log(post.userName)
-		post.user = await userSchema.find({ username: post.userName }, { _id: 1 })
-		post.user = post.user[0]._id
+		//post.user = await userSchema.find({ username: post.userName }, { _id: 1 })
+		post.user = req.user._id //post.user[0]._id
 		console.log(post.user)
 		console.log(post)
 		const newPost = new PostSchema(post)
@@ -97,7 +97,7 @@ PostRouter.get("/from/:userid", authorize, async (req, res, next) => {
 			"user",
 			"-password -refreshToken"
 		)
-		posts = posts.filter((post) => req.user.follows.includes(post.user._id))
+		posts = posts.filter((post) => req.params.userid === post.user._id)
 		res.send(posts)
 	} catch (error) {
 		return next(error)
