@@ -7,8 +7,10 @@ const passport = require("passport")
 const cookieParser = require("cookie-parser")
 
 const usersRouter = require("./services/users")
+const oauth = require("./auth/oauth")
 const postsRouter = require("./services/posts")
 const commentsRouter = require("./services/comments")
+
 
 const {
   notFoundHandler,
@@ -50,17 +52,22 @@ server.use(forbiddenHandler)
 server.use(notFoundHandler)
 server.use(genericErrorHandler)
 
-console.log(listEndpoints(server))
+const endpoints = listEndpoints(server)
+
+//console.log(listEndpoints(server))
 
 mongoose
-  .connect(process.env.MONGO_CONNECTION_STRING, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-  })
-  .then(
-    server.listen(port, () => {
-      console.log("Running on port", port)
-    })
-  )
-  .catch(err => console.log(err))
+	.connect(process.env.MONGO_CONNECTION_STRING, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+		useCreateIndex: true,
+	})
+	.then(
+		server.listen(port, () => {
+			console.log("Running on port", port)
+			endpoints.forEach((endpoint) => {
+				console.log(endpoint.methods, " - ", endpoint.path)
+			})
+		})
+	)
+	.catch((err) => console.log(err))
