@@ -4,6 +4,7 @@ const { verifyJWT } = require("./tools");
 
 const authorize = async (req, res, next) => {
   try {
+    console.log(req.headers)
     const token = req.header("Authorization").replace("Bearer ", "");
     console.log(token);
     const decoded = await verifyJWT(token);

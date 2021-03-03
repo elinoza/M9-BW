@@ -47,7 +47,32 @@ usersRouter.get("/profile", authorize, async (req, res, next) => {
     next(error);
   }
 });
+usersRouter.get(
+  "/googleLogin",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
 
+usersRouter.get(
+  "/googleRedirect",
+    passport.authenticate("google"),
+  async (req, res, next) => {
+    try {
+	
+      res.cookie("accessToken", req.user.tokens.accessToken, {
+        httpOnly: true,
+      });
+      res.cookie("refreshToken", req.user.tokens.refreshToken, {
+        httOnly: true,
+        path: "/users/refreshToken",
+      });
+	  console.log("last thingy thing")
+    
+      res.status(200).redirect(`http://localhost:3000/profile?accessToken=${req.user.tokens.accessToken}&refreshToken=${req.user.tokens.refreshToken}`);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 usersRouter.get("/:id", authorize, async (req, res, next) => {
 	try {
 		const profile = await UserModel.findById(req.params.id)
@@ -183,32 +208,7 @@ usersRouter.post("/refreshToken", async (req, res, next) => {
   }
 });
   
-  usersRouter.get(
-  "/googleLogin",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
-
-usersRouter.get(
-  "/googleRedirect",
-    passport.authenticate("google"),
-  async (req, res, next) => {
-    try {
-	
-      res.cookie("accessToken", req.user.tokens.accessToken, {
-        httpOnly: true,
-      });
-      res.cookie("refreshToken", req.user.tokens.refreshToken, {
-        httOnly: true,
-        path: "/users/refreshToken",
-      });
-	  console.log("last thingy thing")
-    
-      res.status(200).redirect(`http://localhost:3000/home?accessToken=${req.user.tokens.accessToken}&refreshToken=${req.user.tokens.refreshToken}`);
-    } catch (error) {
-      next(error);
-    }
-  }
-);
+ 
   
 usersRouter.post(
 	"/imageUpload/:id",
