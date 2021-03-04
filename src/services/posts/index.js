@@ -107,7 +107,14 @@ PostRouter.get("/:id", authorize, async (req, res, next) => {
 	try {
 		const post = await PostSchema.findById(req.params.id)
 			.populate("user", "-password -refreshToken")
-			.populate({ path: "comments", populate: { path: "user", model: "user" } })
+			.populate({
+				path: "comments",
+				populate: {
+					path: "user",
+					model: "user",
+					select: "userName fullName profilePicUrl",
+				},
+			})
 		if (post) {
 			res.send(post)
 		} else {
