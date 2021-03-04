@@ -105,10 +105,9 @@ PostRouter.get("/from/:userid", authorize, async (req, res, next) => {
 
 PostRouter.get("/:id", authorize, async (req, res, next) => {
 	try {
-		const post = await PostSchema.findById(req.params.id).populate(
-			"user",
-			"-password -refreshToken"
-		)
+		const post = await PostSchema.findById(req.params.id)
+			.populate("user", "-password -refreshToken")
+			.populate("comments")
 		if (post) {
 			res.send(post)
 		} else {
