@@ -253,8 +253,8 @@ PostRouter.post(
 			})
 			author = author.user
 			let editor = req.user._id
-			console.log(author)
-			console.log(editor)
+			console.log("author ", typeof author, " ", author)
+			console.log("editor ", typeof editor, " ", editor)
 			if (author !== editor) {
 				const error = new Error(
 					`User does not own the Post with id ${req.params.id}`
