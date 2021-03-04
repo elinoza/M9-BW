@@ -70,7 +70,7 @@ usersRouter.get(
 			res
 				.status(200)
 				.redirect(
-					`http://localhost:3000/profile?accessToken=${req.user.tokens.accessToken}&refreshToken=${req.user.tokens.refreshToken}`
+					`http://localhost:3000?accessToken=${req.user.tokens.accessToken}&refreshToken=${req.user.tokens.refreshToken}`
 				)
 		} catch (error) {
 			next(error)
