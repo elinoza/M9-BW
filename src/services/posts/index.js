@@ -65,10 +65,9 @@ PostRouter.get("/", authorize, async (req, res, next) => {
 PostRouter.get("/fromFollowed", authorize, async (req, res, next) => {
 	try {
 		//const query = q2m(req.query)
-		let posts = await PostSchema.find({}).populate(
-			"user",
-			"-password -refreshToken"
-		)
+		let posts = await PostSchema.find({})
+			.populate("user", "-password -refreshToken")
+			.populate("comments")
 		posts = posts.filter((post) => req.user.follows.includes(post.user._id))
 		res.send(posts)
 	} catch (error) {
