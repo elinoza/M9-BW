@@ -247,7 +247,7 @@ PostRouter.post(
 	async (req, res, next) => {
 		try {
 			const post = { imageUrl: req.file.path }
-			const author = await PostSchema.findById(req.params.id, {
+			let author = await PostSchema.findById(req.params.id, {
 				_id: 0,
 				user: 1,
 			})
