@@ -11,7 +11,6 @@ const UserSchema = new Schema(
 		email: {
 			type: String,
 			required: true,
-			unique: true,
 		},
 		userName: String,
 		fullName: String,
@@ -22,7 +21,7 @@ const UserSchema = new Schema(
 		comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
 		likedPosts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 		likedComments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
-		follows: [{ type: Schema.Types.ObjectId, ref: "user", unique: true }],
+		follows: [{ type: Schema.Types.ObjectId, ref: "user" }],
 		refreshTokens: [
 			{
 				token: {
