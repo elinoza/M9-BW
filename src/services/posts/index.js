@@ -260,7 +260,8 @@ PostRouter.post(
 					`User does not own the Post with id ${req.params.id}`
 				)
 				error.httpStatusCode = 403
-				return next(error)
+				//return next(error)
+				next(error)
 			}
 			console.log(req.body)
 			console.log(req.file.buffer)
