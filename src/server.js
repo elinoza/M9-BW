@@ -11,26 +11,25 @@ const oauth = require("./auth/oauth")
 const postsRouter = require("./services/posts")
 const commentsRouter = require("./services/comments")
 
-
 const {
-  notFoundHandler,
-  forbiddenHandler,
-  badRequestHandler,
-  genericErrorHandler,
+	notFoundHandler,
+	forbiddenHandler,
+	badRequestHandler,
+	genericErrorHandler,
 } = require("./errorHandlers")
 
 const server = express()
 
-const whitelist = ["http://localhost:3000"]
+const whitelist = ["*"] //["http://localhost:3000"]
 const corsOptions = {
-  origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true)
-    } else {
-      callback(new Error("Not allowed by CORS"))
-    }
-  },
-  credentials: true,
+	origin: (origin, callback) => {
+		if (whitelist.indexOf(origin) !== -1 || !origin) {
+			callback(null, true)
+		} else {
+			callback(new Error("Not allowed by CORS"))
+		}
+	},
+	credentials: true,
 }
 
 server.use(cors(corsOptions))
