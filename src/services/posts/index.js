@@ -251,8 +251,8 @@ PostRouter.post(
 				_id: 0,
 				user: 1,
 			})
-			author = author.user
-			let editor = req.user._id
+			author = author.user.toString()
+			let editor = req.user._id.toString()
 			console.log("author ", typeof author, " ", author)
 			console.log("editor ", typeof editor, " ", editor)
 			if (author !== editor) {
