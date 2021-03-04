@@ -105,6 +105,7 @@ usersRouter.get("/:id", authorize, async (req, res, next) => {
 usersRouter.post("/register", async (req, res, next) => {
 	try {
 		if (UserModel.find(req.body.email)) {
+			res.status(403).send("duplicate")
 			console.log("duplicate")
 		} else {
 			const newUser = new UserModel(req.body)
