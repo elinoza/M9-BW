@@ -225,7 +225,7 @@ usersRouter.post(
 	async (req, res, next) => {
 		try {
 			const post = { profilePicUrl: req.file.path }
-			const author = await UserSchema.findById(req.params.id, {
+			const author = await UserModel.findById(req.params.id, {
 				_id: 0,
 				user: 1,
 			})
@@ -241,7 +241,7 @@ usersRouter.post(
 			console.log("help")
 			//res.json({ msg: "image uploaded" })
 
-			const newPost = await UserSchema.findByIdAndUpdate(req.params.id, post, {
+			const newPost = await UserModel.findByIdAndUpdate(req.params.id, post, {
 				runValidators: true,
 				new: true,
 			})
