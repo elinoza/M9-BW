@@ -225,17 +225,6 @@ usersRouter.post(
 	async (req, res, next) => {
 		try {
 			const post = { profilePicUrl: req.file.path }
-			const author = await UserModel.findById(req.params.id, {
-				_id: 0,
-				user: 1,
-			})
-			if (author.user.userName !== req.user.userName) {
-				const error = new Error(
-					`User does not own the Post with id ${req.params.id}`
-				)
-				error.httpStatusCode = 403
-				return next(error)
-			}
 			console.log(req.body)
 			console.log(req.file.buffer)
 			console.log("help")
