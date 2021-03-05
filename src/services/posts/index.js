@@ -245,6 +245,40 @@ PostRouter.post("/dislike/:id", authorize, async (req, res, next) => {
 	}
 })
 
+PostRouter.post("/save/:id", authorize, async (req, res, next) => {
+	try {
+		const updated = await userSchema.findByIdAndUpdate(
+			req.user,
+			{
+				$addToSet: {
+					savedPosts: req.params.id,
+				},
+			},
+			{ runValidators: true, new: true }
+		)
+		res.status(201).send("liked")
+	} catch (error) {
+		next(error)
+	}
+})
+
+PostRouter.post("/unsave/:id", authorize, async (req, res, next) => {
+	try {
+		const updated = await userSchema.findByIdAndUpdate(
+			req.user,
+			{
+				$pull: {
+					savedPosts: req.params.id,
+				},
+			},
+			{ runValidators: true, new: true }
+		)
+		res.status(201).send("removed the like")
+	} catch (error) {
+		next(error)
+	}
+})
+
 /**
  * this is for the image upload
  */

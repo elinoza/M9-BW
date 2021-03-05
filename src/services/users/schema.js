@@ -20,6 +20,7 @@ const UserSchema = new Schema(
 		posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 		comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
 		likedPosts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+		savedPosts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 		likedComments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
 		follows: [{ type: Schema.Types.ObjectId, ref: "user" }],
 		refreshTokens: [
