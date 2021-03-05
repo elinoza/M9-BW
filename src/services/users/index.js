@@ -145,7 +145,7 @@ usersRouter.post("/follow/:id", authorize, async (req, res, next) => {
 			{ runValidators: true, new: true }
 		)
 		//await req.user.save()
-		res.send(req.params.id)
+		res.send("followed")
 	} catch (error) {
 		next(error)
 	}
@@ -163,7 +163,7 @@ usersRouter.post("/unfollow/:id", authorize, async (req, res, next) => {
 			{ runValidators: true, new: true }
 		)
 		//await req.user.save()
-		res.send(req.params.id)
+		res.send("unfollowed")
 	} catch (error) {
 		next(error)
 	}
