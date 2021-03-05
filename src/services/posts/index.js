@@ -279,6 +279,21 @@ PostRouter.post("/unsave/:id", authorize, async (req, res, next) => {
 	}
 })
 
+usersRouter.get("/saved/", authorize, async (req, res, next) => {
+	try {
+		console.log("help me")
+		//const profile = await UserModel.findPopulated(req.user._id)
+		const profile = await UserModel.findById(
+			req.user._id,
+			"savedPosts"
+		).populate("savedPosts")
+		console.log("got this as profile", profile)
+		res.send(profile[0])
+	} catch (error) {
+		next(error)
+	}
+})
+
 /**
  * this is for the image upload
  */
