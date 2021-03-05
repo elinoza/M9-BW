@@ -279,7 +279,7 @@ PostRouter.post("/unsave/:id", authorize, async (req, res, next) => {
 	}
 })
 
-usersRouter.get("/saved/", authorize, async (req, res, next) => {
+PostRouter.get("/saved/", authorize, async (req, res, next) => {
 	try {
 		console.log("help me")
 		//const profile = await UserModel.findPopulated(req.user._id)
